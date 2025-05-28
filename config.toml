@@ -1,0 +1,2 @@
+[functions.send-sinyal]
+include = ["supabase/functions/send-sinyal/**"]
