@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Myfxbook Signal Finder</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .signal { margin-bottom: 20px; }
+    .buy { color: green; font-weight: bold; }
+    .sell { color: red; font-weight: bold; }
+    .wait { color: gray; font-style: italic; }
+  </style>
+</head>
+<body>
+  <h2>Forex Signal Otomatis (Myfxbook)</h2>
+  <div id="signals"></div>
+  <script>
+    const session = "9UtvFTG9S31Z4vO1aDW31671626";
+    const url = `https://corsproxy.io/?https://www.myfxbook.com/api/get-community-outlook.json?session=${session}`;
+
+    async function cariSinyal() {
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (!data.symbols || !Array.isArray(data.symbols)) {
+          document.getElementById('signals').innerText = "Data tidak ditemukan.";
+          return;
+        }
+
+        let hasil = '';
+        let totalSinyal = 0;
+
+        data.symbols.forEach(pair => {
+          let signalText = '';
+          if (pair.longPercentage >= 70) {
+            signalText = `<span class="buy">BUY (long)</span>`;
+            totalSinyal++;
+          } else if (pair.shortPercentage >= 70) {
+            signalText = `<span class="sell">SELL (short)</span>`;
+            totalSinyal++;
+          } else {
+            signalText = `<span class="wait">Tidak ada sinyal (wait)</span>`;
+          }
+          hasil += `<div class="signal">
+            <b>${pair.name}</b> <br>
+            Long: ${pair.longPercentage}% &nbsp; | &nbsp; Short: ${pair.shortPercentage}%<br>
+            Sinyal: ${signalText}
+          </div>`;
+        });
+
+        if (totalSinyal === 0) {
+          hasil = "<div class='wait'>Belum ada pair yang memenuhi kriteria sinyal (long/short ≥ 70%)</div>";
+        }
+
+        document.getElementById('signals').innerHTML = hasil;
+      } catch (e) {
+        document.getElementById('signals').innerText = "Gagal mengambil data: " + e;
+      }
+    }
+
+    // Jalankan otomatis saat halaman dibuka
+    cariSinyal();
+
+    // Untuk auto-refresh setiap 1 menit:
+    setInterval(cariSinyal, 60000);
+  </script>
+</body>
+</html>
