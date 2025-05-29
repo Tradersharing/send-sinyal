@@ -1,4 +1,4 @@
-import { serve } from "https://deno.land/std/http/server.ts";
+import { serve } from "https://deno.land/std/http/server.js";
 
 // Konfigurasi
 const TELEGRAM_BOT_TOKEN = "8127447550:AAGKdqsYEwxT9iEYWrrGgijakir9qTzJVsU";
@@ -8,11 +8,13 @@ const SUPABASE_URL = 'https://oaatowhxrefpjlwucvvg.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hYXRvd2h4cmVmcGpsd3VjdnZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0MzgzMDQsImV4cCI6MjA2NDAxNDMwNH0.-Qf6y5JiWVx2P[...]';
 
 // Konversi 20/50/100 pips jadi harga (dalam 4 digit: 0.0020 = 20 pips)
-const pipToPrice = (pips: number) => pips * 0.0001;
+function pipToPrice(pips) {
+  return pips * 0.0001;
+}
 
-let lastSent: Record<string, number> = {};
+let lastSent = {};
 
-async function insertSignalToSupabase(signal: any) {
+async function insertSignalToSupabase(signal) {
   const response = await fetch(`${SUPABASE_URL}/rest/v1/forex`, {
     method: "POST",
     headers: {
@@ -31,7 +33,7 @@ async function insertSignalToSupabase(signal: any) {
   return await response.json();
 }
 
-async function sendSignalToTelegram(text: string) {
+async function sendSignalToTelegram(text) {
   const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
   const resp = await fetch(url, {
     method: "POST",
