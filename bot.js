@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 
 const TELEGRAM_BOT_TOKEN = "8127447550:AAGKdqsYEwxT9iEYWrrGgijakir9qTzJVsU";
 const CHANNEL_ID = "@info_seputarforex";
-const SIGNAL_API = "https://corsproxy.io/?https://www.myfxbook.com/api/get-community-outlook.json?session=9UtvFTG9S31Z4vO1aDW31671626";
+const DATA_URL = 'https://tradersharing.github.io/Tradersharing/index_V2.html';
 const SUPABASE_URL = 'https://oaatowhxrefpjlwucvvg.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hYXRvd2h4cmVmcGpsd3VjdnZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0MzgzMDQsImV4cCI6MjA2NDAxNDMwNH0.-Qf6y5JiWVx2P[...]'
 
