@@ -5,7 +5,22 @@ const TELEGRAM_BOT_TOKEN = "8127447550:AAGKdqsYEwxT9iEYWrrGgijakir9qTzJVsU";
 const CHANNEL_ID = "@info_seputarforex";
 const SIGNAL_API = "https://corsproxy.io/?https://www.myfxbook.com/api/get-community-outlook.json?session=9UtvFTG9S31Z4vO1aDW31671626";
 const SUPABASE_URL = 'https://oaatowhxrefpjlwucvvg.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hYXRvd2h4cmVmcGpsd3VjdnZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0MzgzMDQsImV4cCI6MjA2NDAxNDMwNH0.-Qf6y5JiWVx2P[...]';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hYXRvd2h4cmVmcGpsd3VjdnZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0MzgzMDQsImV4cCI6MjA2NDAxNDMwNH0.-Qf6y5JiWVx2P[...]'
+
+// ====== FILTER PAIR DIIZINKAN =======
+const allowedPairs = [
+  // Major (7)
+  "EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDJPY", "USDCHF", "USDCAD",
+  // Minor
+  "EURGBP", "EURJPY", "EURAUD", "EURCAD", "EURCHF", "EURNZD",
+  "GBPJPY", "GBPAUD", "GBPCAD", "GBPCHF", "GBPNZD",
+  "AUDJPY", "AUDNZD", "AUDCAD", "AUDCHF",
+  "CADJPY", "CHFJPY", "NZDJPY", "NZDCAD", "NZDCHF",
+  // Komoditas utama
+  "XAUUSD", // GOLD
+  "WTI",    // Oil (kadang di-broker ditulis WTI)
+  "OIL"     // Oil (nama lain, kadang OILUSD/USOIL, tambahkan jika perlu)
+];
 
 function pipToPrice(pips) {
   return pips * 0.0001;
@@ -65,7 +80,13 @@ async function mainLoop() {
     const data = json.data;
 
     for (const sinyal of data) {
-      const pair = sinyal.name;
+      const pair = sinyal.name.toUpperCase();
+
+      // ===== FILTER PAIR HANYA YANG ADA DI allowedPairs =====
+      if (!allowedPairs.includes(pair)) {
+        continue; // skip jika pair tidak diizinkan
+      }
+
       const buy = parseFloat(sinyal.longPercentage);
       const sell = parseFloat(sinyal.shortPercentage);
       const currentPrice = parseFloat(sinyal.avgPrice);
