@@ -1,5 +1,12 @@
 {
-  "name": "send-sinyal",
+  "name": "supabase-termux-app",
   "version": "1.0.0",
-  "type": "module"
+  "description": "Koneksi Supabase dengan Node.js di Termux",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.6"
+  }
 }
